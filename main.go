@@ -17,12 +17,15 @@ func main() {
 	flag.Parse()
 
 	
-	output, err := Get(length, dataType, size)
+	response, err := Get(length, dataType, size)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	output, err := response.PrintData()
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println(output)
 	return
 }

@@ -1,7 +1,6 @@
 package main
 
 import(
-	"io"
 	"fmt"
 	"strconv"
 	"net/http"
@@ -9,6 +8,10 @@ import(
 )
 
 var URL = "https://qrng.anu.edu.au/API/jsonI.php"
+
+type Response interface {
+	PrintData() (string, error)
+}
 
 type HexResponse struct {
 	DataType string `json: "type"`
@@ -26,45 +29,35 @@ type IntResponse struct {
 	Success bool `json: "success"`
 }
 
-func processHex(body io.ReadCloser) (output string, err error) {
-	jsonResponse := HexResponse{}
-	err = json.NewDecoder(body).Decode(&jsonResponse)
-	if err != nil {
-		return
-	}
-
-	for i := range jsonResponse.Data {
-		output = output + " " + jsonResponse.Data[i]
-	}
-
-	return
-}
-
-func processInt(body io.ReadCloser) (output string, err error) {
-	jsonResponse := IntResponse{}
-	err = json.NewDecoder(body).Decode(&jsonResponse)
-	if err != nil {
-		return
-	}
-
-	for i := range jsonResponse.Data {
-		output = output + " " + strconv.Itoa(jsonResponse.Data[i])
+func (r *HexResponse) PrintData() (output string, err error) {
+	for i := range r.Data {
+		output = output + " " + r.Data[i]
 	}
 	return
 }
 
-func Get(length int, dataType string, size int) (output string, err error) {
+func (r *IntResponse) PrintData() (output string, err error) {
+	for i := range r.Data {
+		output = output + " " + strconv.Itoa(r.Data[i])
+	}
+	return
+}
+
+func Get(length int, dataType string, size int) (jsonResponse Response, err error) {
 	URLWithParams := URL + fmt.Sprintf("?length=%v&type=%v&size=%v", length, dataType, size)
 	resp, err := http.Get(URLWithParams)
 
 	if err != nil {
 		return
 	}
-
+	
 	if (dataType == "hex16") {
-		output, err = processHex(resp.Body)
+		jsonResponse = &HexResponse{}
 	} else {
-		output, err = processInt(resp.Body)
+		jsonResponse = &IntResponse{}
 	}
+
+	err = json.NewDecoder(resp.Body).Decode(&jsonResponse)
+	
 	return
 }
