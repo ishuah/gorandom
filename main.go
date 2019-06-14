@@ -22,10 +22,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	output, err := response.PrintData()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(output)
+
+	fmt.Println(response.Data)
 	return
 }
