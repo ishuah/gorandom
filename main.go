@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
-	"flag"
 )
 
 func main() {
@@ -16,7 +16,6 @@ func main() {
 	flag.IntVar(&size, "size", 5, "Block size")
 	flag.Parse()
 
-	
 	response, err := Get(length, dataType, size)
 
 	if err != nil {
