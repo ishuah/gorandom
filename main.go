@@ -22,6 +22,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(response.Data)
+	for _, value := range response.Data {
+		fmt.Println(value)
+	}
+
 	return
 }
