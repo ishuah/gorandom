@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/ishuah/grand/api"
 	"log"
 )
 
@@ -16,7 +17,7 @@ func main() {
 	flag.IntVar(&size, "size", 5, "Block size")
 	flag.Parse()
 
-	response, err := Get(length, dataType, size)
+	response, err := api.Get(length, dataType, size)
 
 	if err != nil {
 		log.Fatal(err)
