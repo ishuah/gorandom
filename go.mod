@@ -1,3 +1,3 @@
-module github.com/ishuah/grand
+module github.com/ishuah/gorandom
 
 go 1.13
