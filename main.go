@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/ishuah/gorandom/api"
+	"github.com/ishuah/qrandom/api"
 	"log"
 )
 
